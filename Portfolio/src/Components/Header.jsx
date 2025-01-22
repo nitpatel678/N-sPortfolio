@@ -2,7 +2,10 @@ import React from "react";
 
 function Header() {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-16 bg-white mt-1 z-20" id="home">
+    <section
+      className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-16 bg-white mt-1 z-20"
+      id="home"
+    >
       {/* Left Side: Image */}
       <div className="w-full md:w-1/3 flex justify-center mb-6 md:mb-0">
         <img

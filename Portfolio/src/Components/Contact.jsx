@@ -1,56 +1,41 @@
 import React, { useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
 
 function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [isPopupVisible, setPopupVisible] = useState(false);
-  const [showFieldError, setShowFieldError] = useState(false); // State for field error
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [timer, setTimer] = useState(100);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+  const handleSendMail = () => {
+    // Gmail compose URL
+    const gmailComposeURL = `https://mail.google.com/mail/?view=cm&fs=1&to=nitpatel678@gmail.com&su=Let's Connect for Future Partnership!&body=Hi Nitin Patel,%0D%0A%0D%0AI came across your contact details and would like to connect with you for future partnerships and collaborations.%0D%0A%0D%0ALooking forward to hearing from you!%0D%0A%0D%0ABest Regards,`;
+
+    // Open Gmail in a new tab
+    const newTab = window.open(gmailComposeURL, "_blank");
+
+    if (newTab) {
+      const interval = setInterval(() => {
+        if (newTab.closed) {
+          clearInterval(interval);
+          // Show the popup and start the timer
+          setIsPopupVisible(true);
+          startPopupTimer();
+        }
+      }, 500);
+    } else {
+      alert("Unable to open Gmail. Please check your browser settings.");
+    }
   };
 
-  useEffect(() => {
-    let interval;
-    if (isPopupVisible && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 30);
-    } else if (timer === 0) {
-      setPopupVisible(false);
-    }
-    return () => clearInterval(interval);
-  }, [isPopupVisible, timer]);
+  const startPopupTimer = () => {
+    let timeLeft = 100;
+    const progressBar = setInterval(() => {
+      timeLeft -= 1;
+      setTimer(timeLeft);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, email, message } = formData;
-
-    if (!name || !email || !message) {
-      setShowFieldError(true); // Show error popup
-      return;
-    }
-
-    emailjs
-      .send(
-        "service_tjbl7lq",
-        "template_9id7f5w",
-        { name, email, message },
-        "xF0rHOI_cbCJpRBKB"
-      )
-      .then(
-        (response) => {
-          console.log("SUCCESS!", response.status, response.text);
-          setPopupVisible(true);
-          setTimer(100);
-          setFormData({ name: "", email: "", message: "" });
-        },
-        (error) => {
-          console.error("FAILED...", error);
-        }
-      );
+      if (timeLeft <= 0) {
+        clearInterval(progressBar);
+        setIsPopupVisible(false);
+      }
+    }, 30); // Update every 30ms for smooth transition
   };
 
   return (
@@ -79,78 +64,21 @@ function Contact() {
 
         <div className="hidden md:block border-l-2 border-gray-900 h-auto mx-6"></div>
 
-        {/* Contact Form */}
+        {/* Instant Connect Section */}
         <div className="w-full md:w-2/3">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-lg text-gray-700 font-syne font-bold">
-                Your Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full mt-2 p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
+          <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-700">
+            Want to Connect Instantly?
+          </h3>
+          <p className="text-lg text-gray-600 mb-6">
+            Connect with me via email and get a quick response for future partnerships and collaborations.
+          </p>
 
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-lg text-gray-700 font-syne font-bold">
-                Your Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full mt-2 p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="block text-lg font-syne font-bold text-gray-700"
-              >
-                Your Message
-              </label>
-              <textarea
-                id="message"
-                className="w-full mt-2 p-3 border border-gray-300 rounded-lg"
-                rows="4"
-                placeholder="Write your message"
-                value={formData.message}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="relative">
-              <button
-                type="submit"
-                className="bg-violet-600 text-white py-3 px-6 rounded-lg hover:bg-violet-800 transition duration-300 font-syne font-extrabold"
-              >
-                Send Message
-              </button>
-
-              {/* Error Popup */}
-              {showFieldError && (
-                <div className="absolute right-0 top-0 bg-white border border-violet-600 rounded-lg p-3 shadow-lg flex items-center gap-3">
-                  <span className="text-violet-600 text-sm font-bold">
-                    Please fill all the fields
-                  </span>
-                  <button
-                    onClick={() => setShowFieldError(false)}
-                    className="text-red-500 text-xl"
-                  >
-                    &times;
-                  </button>
-                </div>
-              )}
-            </div>
-          </form>
+          <button
+            onClick={handleSendMail}
+            className="bg-violet-600 text-white py-3 px-6 rounded-lg hover:bg-violet-800 transition duration-300 font-syne font-extrabold"
+          >
+            Send Mail
+          </button>
         </div>
       </div>
 
@@ -168,8 +96,8 @@ function Contact() {
           className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-violet-600"
           style={{
             width: `${timer}%`,
-            height: '5px',
-            transition: 'width 0.03s linear',
+            height: "5px",
+            transition: "width 0.03s linear",
           }}
         />
       )}

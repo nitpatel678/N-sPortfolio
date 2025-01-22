@@ -1,129 +1,121 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function Projects() {
+  // Define the state for managing project visibility and loading status
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [projectsVisible, setProjectsVisible] = useState(3);
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  // Mock Projects Data (Add more projects for testing)
+  const projects = [
+    {
+      title: "Project Mate",
+      description: "Project Mate is a platform where users can discover, join, and collaborate on various projects.",
+      imgSrc: "./src/Images/ProjectMate_Orange.png",
+      liveLink: "link-to-live-project",
+      githubLink: "https://github.com/nitpatel678/SideProject-ProjectMate",
+    },
+    {
+      title: "Gemini Clone",
+      description: "The Gemini Clone replicates key features of the Gemini app, offering real-time updates and seamless interaction.",
+      imgSrc: "./src/Images/Gemini.jpg",
+      liveLink: "link-to-live-project",
+      githubLink: "https://github.com/nitpatel678/Gemini_ReactClone",
+    },
+    {
+      title: "Invi Mail",
+      description: "InviMail validates email addresses, ensuring proper formatting and uniqueness.",
+      imgSrc: "./src/Images/Email.jpg",
+      liveLink: "link-to-live-project",
+      githubLink: "link-to-github",
+    },
+    // Add more projects if required
+  ];
+
+  // Handle project visibility expansion
+  const toggleExpansion = () => {
+    if (projects.length <= 3) {
+      setPopupVisible(true);
+      setTimeout(() => setPopupVisible(false), 4000); // Hide popup after 4 seconds
+    } else {
+      setIsExpanded(!isExpanded);
+      setProjectsVisible(isExpanded ? 3 : projects.length);
+    }
+  };
+
   return (
-    <section class="py-16 bg-gray-50" id="projects">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold text-violet-600">PROJECTS</h2>
+    <section className="py-16 bg-gray-50" id="projects">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold text-violet-600">PROJECTS</h2>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-full">
-          <img
-            src="./src/Images/ProjectMate_Orange.png"
-            alt="Project Image"
-            class="w-full h-64 object-cover"
-          />
+      {/* Project Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20 px-6 md:px-12 max-w-7xl mx-auto">
+        {projects.slice(0, projectsVisible).map((project, index) => (
+          <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-full">
+            <img src={project.imgSrc} alt="Project Image" className="w-full h-64 object-cover" />
 
-          <div class="p-6 flex flex-col justify-between flex-grow">
-            <h3 class="text-3xl font-poppins font-semibold text-gray-900 mb-4">
-              Project <span class="text-violet-600">Mate</span>
-            </h3>
+            <div className="p-6 flex flex-col justify-between flex-grow">
+              <h3 className="text-3xl font-poppins font-semibold text-gray-900 mb-4">
+                {project.title}
+              </h3>
 
-            <p class="text-lg text-gray-600 text-justify mb-4">
-              Project Mate is a platform where users can discover, join, and
-              collaborate on various projects, connecting people with
-              opportunities to work together and achieve common goals.
-            </p>
+              <p className="text-lg text-gray-600 text-justify mb-4">
+                {project.description}
+              </p>
 
-            <div class="flex justify-start gap-4 mt-6">
-              <a
-                href="link-to-live-project"
-                target="_blank"
-                class="text-violet-600 hover:text-violet-800 text-3xl transition duration-300"
-                title="Live Preview"
-              >
-                <i class="fas fa-eye"></i>
-              </a>
+              <div className="flex justify-start gap-4 mt-6">
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  className="text-violet-600 hover:text-violet-800 text-3xl transition duration-300"
+                  title="Live Preview"
+                >
+                  <i className="fas fa-eye"></i>
+                </a>
 
-              <a
-                href="link-to-github"
-                target="_blank"
-                class="text-gray-800 hover:text-gray-600 text-3xl transition duration-300"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
+                <a
+                  href={project.githubLink}
+                  target="_blank"
+                  className="text-gray-800 hover:text-gray-600 text-3xl transition duration-300"
+                  title="GitHub"
+                >
+                  <i className="fab fa-github"></i>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-full">
-          <img
-            src="./src/Images/Gemini.jpg"
-            alt="Project Image"
-            class="w-full h-64 object-cover"
-          />
-
-          <div class="p-6 flex flex-col justify-between flex-grow">
-            <h3 class="text-3xl font-poppins font-semibold text-gray-900 mb-4">
-              Gemini <span class="text-violet-600">Clone</span>
-            </h3>
-
-            <p class="text-lg text-gray-600 text-justify mb-4">
-            The Gemini Clone replicates the key features of the Gemini app,user-friendly platform with real-time updates,and seamless user interaction. Designed to provide a similar experience.
-            </p>
-
-            <div class="flex justify-start gap-4 mt-6">
-              <a
-                href="link-to-live-project"
-                target="_blank"
-                class="text-violet-600 hover:text-violet-800 text-3xl transition duration-300"
-                title="Live Preview"
-              >
-                <i class="fas fa-eye"></i>
-              </a>
-
-              <a
-                href="link-to-github"
-                target="_blank"
-                class="text-gray-800 hover:text-gray-600 text-3xl transition duration-300"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-            </div>
+      {/* Popup for 'No New Projects' when only 3 projects */}
+      {popupVisible && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <p className="text-xl font-semibold text-gray-700">There are no new projects!</p>
+            <p className="text-sm text-gray-600">Please check back later.</p>
           </div>
         </div>
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-full">
-          <img
-            src="./src/Images/Email.jpg"
-            alt="Project Image"
-            class="w-full h-64 object-cover"
-          />
+      )}
 
-          <div class="p-6 flex flex-col justify-between flex-grow">
-            <h3 class="text-3xl font-poppins font-semibold text-gray-900 mb-4">
-              Invi <span class="text-violet-600">Mail</span>
-            </h3>
-
-            <p class="text-lg text-gray-600 text-justify mb-4">
-              InviMail validates email addresses to ensure uniqueness and proper
-              formatting by checking against previously stored emails, enhancing
-              user experience through instant feedback.
-            </p>
-
-            <div class="flex justify-start gap-4 mt-6">
-              <a
-                href="link-to-live-project"
-                target="_blank"
-                class="text-violet-600 hover:text-violet-800 text-3xl transition duration-300"
-                title="Live Preview"
-              >
-                <i class="fas fa-eye"></i>
-              </a>
-
-              <a
-                href="link-to-github"
-                target="_blank"
-                class="text-gray-800 hover:text-gray-600 text-3xl transition duration-300"
-                title="GitHub"
-              >
-                <i class="fab fa-github"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+      {/* Expand/Collapse Section */}
+      <div className="text-center mt-8 flex justify-center items-center">
+        <button
+          onClick={toggleExpansion}
+          className="text-violet-600 hover:text-violet-800 text-xl font-semibold flex items-center justify-center gap-2"
+        >
+          {isExpanded ? (
+            <>
+              <span>Show Less</span>
+              <i className="fas fa-arrow-up"></i>
+            </>
+          ) : (
+            <>
+              <span>See All Projects</span>
+              <i className="fas fa-arrow-down"></i>
+            </>
+          )}
+        </button>
       </div>
     </section>
   );
