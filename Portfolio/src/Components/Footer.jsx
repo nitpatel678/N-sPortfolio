@@ -6,7 +6,7 @@ function Footer() {
       <div class="container mx-auto px-6 flex items-center justify-between">
         <div class="text-3xl font-bold text-violet-600 font-ari">
           <span className="text-black">Nitin</span> Patel
-          <p className="font-syne text-sm text-black">nitpatle678@gmail.com</p>
+          <p className="font-syne text-sm text-black">nitpatle678@gmail.com </p>
         </div>
 
         <div class="flex items-center justify-center">
